@@ -1,34 +1,23 @@
-function add(num1, num2) {
-    return num1 + num2;
-}
-
-function subtract(num1, num2) {
-    return num1 - num2;
-}
-
-function multiply(num1, num2) {
-    return num1 * num2;
-}
-
-function divide(num1, num2) {
-    return num1 / num2; 
-}
-
-let num1 = "";
+let num = "";
 
 //event listener for digit (0-9) buttons
 function initializeNumberButtons() {
     //an array of length 10 for numbers 0-9
     const digits = document.querySelectorAll(".digit");
+    
 
     //iterating through each position and listening for user click
     digits.forEach(digit => {
         digit.addEventListener("click", function() {
-            num1 = num1 + digit.id;
-            console.log(num1); 
+            num = num + digit.id;
+            //displays the number as the user clicks 
+            document.getElementById("calcdisplay").innerHTML = num; 
         });
     });
 }
+
+let dispValue = 0;
+let operation = "";
 
 //event listener for operator buttons
 function initializeOperator() {
@@ -37,8 +26,12 @@ function initializeOperator() {
 
     //iterating through each position and listening for user click
     operations.forEach(operator => {
-        operator.addEventListener("click", function() {
-            console.log(operator.id); 
+        operator.addEventListener("click", function() { 
+            dispValue = parseInt(num);
+            operation = operator.id;
+            console.log(dispValue + operation);
+            document.getElementById("calchistory").innerHTML = dispValue + " " + operator.id;
+            num="";
         });
     });
 }
@@ -49,54 +42,47 @@ function initializeEqual() {
 
     //listening for user click
     equals.addEventListener("click", function() {
-            console.log(equals.id); 
+            let solution = operate(operation, dispValue, parseInt(num)); 
+            document.getElementById("calchistory").innerHTML = dispValue + " " + operation + " " + num + " ="; 
+            document.getElementById("calcdisplay").innerHTML = solution; 
         });
 }
 
-//event listener for clear button
+//event listener for clear and delete buttons
 function initializeDeletes() {
     const removes = document.querySelectorAll(".bigbutton");
 
      //iterating through each position and listening for user click
      removes.forEach(removal => {
         removal.addEventListener("click", function() {
-            console.log(removal.id); 
+            document.getElementById("calchistory").innerHTML = "";
+            document.getElementById("calcdisplay").innerHTML = ""; 
+            num="";
         });
     });
 }
-
 
 initializeNumberButtons();
 initializeOperator();
 initializeEqual(); 
 initializeDeletes();
 
-
-function display() {
-
-}
-
-let addOp = "+";
-let subOp = "-";
-let multOp = "*";
-let divOp = "/";
-
 //takes an operator and 2 numbers and calls one of the above functions
-function operate(operator, num1, num2) {
+function operate(operation, first, second) {
     let result = 0;
+    console.log(first + " " + operation + " " + second);
 
-    if (operator === addOp) {
-        result = add(num1, num2);
+    if (operation === "+") {
+        result = first + second;
     }
-    else if (operator === subOp) {
-        result = subtract(num1, num2);
+    else if (operation === "-") {
+        result = first - second;
     }
-    else if (operator === multOp) {
-        result = multiply(num1, num2);
+    else if (operation === "x") {
+        result = first * second;
     }
-    else if (operator === divOp) {
-        result = divide(num1, num2);
+    else if (operation === "/") {
+        result = first / second;
     }
     return result; 
 }
-
