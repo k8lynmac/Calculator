@@ -5,7 +5,6 @@ let operation = "";
 let num = "";
 let opCount=0;
 let eqCount = 0;
-let storeEqual = 0;
 
 initializeNumberButtons();
 initializeOperator();
@@ -14,7 +13,8 @@ initializeDeletes();
 
 //event listener for digit (0-9) buttons
 function initializeNumberButtons() {
-    const digits = document.querySelectorAll(".digit");
+    const digits = document.querySelectorAll(".digit"); 
+
         digits.forEach(digit => {
             digit.addEventListener("click", function() {
                 num = num + digit.id;
@@ -42,9 +42,9 @@ function initializeOperator() {
             else if (opCount > 0 && eqCount > 0) {
                 
                 operation = operator.id;
-                document.getElementById("calchistory").innerHTML = storeEqual + " " + operation;
+                document.getElementById("calchistory").innerHTML = num + " " + operation;
                 document.getElementById("calcdisplay").innerHTML = ""; 
-                dispValue = storeEqual;
+                dispValue = num;
                 num = "";
                 eqCount = 0;
             }
@@ -65,11 +65,15 @@ function initializeEqual() {
     const equals = document.querySelector(".equals");
 
     equals.addEventListener("click", function() {
+
+            if (opCount === 0) {
+                return;
+            }
+
             solution = operate(operation, parseFloat(dispValue), parseFloat(num));
             document.getElementById("calchistory").innerHTML = dispValue + " " + operation + " " + num + " ="; 
             document.getElementById("calcdisplay").innerHTML = solution; 
-            num = "";
-            storeEqual = solution; 
+            num = solution;
             eqCount ++;
         });
 }
